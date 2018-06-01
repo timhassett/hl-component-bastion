@@ -1,0 +1,10 @@
+AccountId:
+  '000000000000':
+    KeyName: key
+    DnsDomain: example.tld
+
+EnvironmentType:
+  development:
+    BastionInstanceType: t2.micro
+  production:
+    BastionInstanceType: t2.micro
