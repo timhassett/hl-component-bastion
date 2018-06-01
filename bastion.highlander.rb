@@ -3,7 +3,7 @@ HighlanderComponent do
   Parameters do
     StackParam 'EnvironmentName', 'dev', isGlobal: true
     StackParam 'EnvironmentType', 'development', isGlobal: true
-    StackParam 'BastionAmi', isGlobal: true
+    StackParam 'Ami'
     MappingParam('InstanceType') do
       map 'EnvironmentType'
       attribute 'BastionInstanceType'

@@ -55,7 +55,7 @@ CloudFormation do
   end
 
   LaunchConfiguration('LaunchConfig') do
-    ImageId Ref('BastionAmi')
+    ImageId Ref('Ami')
     InstanceType Ref('InstanceType')
     AssociatePublicIpAddress true
     IamInstanceProfile Ref('InstanceProfile')
