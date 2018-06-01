@@ -17,6 +17,7 @@ HighlanderComponent do
       attribute 'DnsDomain'
     end
     subnet_parameters({'public'=>{'name'=>'Public'}}, maximum_availability_zones)
+    OutputParam component: 'vpc', name: "VPCId"
     OutputParam component: 'vpc', name: 'SecurityGroupDev'
     OutputParam component: 'vpc', name: 'SecurityGroupOps'
   end
