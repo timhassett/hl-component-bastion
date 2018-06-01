@@ -2,6 +2,29 @@ CloudFormation do
 
   az_conditions_resources('SubnetPublic', maximum_availability_zones)
 
+  EC2_SecurityGroup('SecurityGroupBastion') do
+    GroupDescription FnJoin(' ', [ Ref('EnvironmentName'), component_name ])
+    VpcId Ref('VPCId')
+  end
+
+  EC2_SecurityGroupIngress('OpsIngressRule') do
+    Description 'SSH access from ops security group'
+    IpProtocol 'tcp'
+    FromPort '22'
+    ToPort '22'
+    GroupId FnGetAtt('SecurityGroupBastion','GroupId')
+    SourceSecurityGroupId Ref('SecurityGroupOps')
+  end
+
+  EC2_SecurityGroupIngress('DevIngressRule') do
+    Description 'SSH access from dev security group'
+    IpProtocol 'tcp'
+    FromPort '22'
+    ToPort '22'
+    GroupId FnGetAtt('SecurityGroupBastion','GroupId')
+    SourceSecurityGroupId Ref('SecurityGroupDev')
+  end
+
   EIP('BastionIPAddress') do
     Domain 'vpc'
   end
@@ -37,7 +60,7 @@ CloudFormation do
     AssociatePublicIpAddress true
     IamInstanceProfile Ref('InstanceProfile')
     KeyName Ref('KeyName')
-    SecurityGroups [ Ref('SecurityGroupOps'), Ref('SecurityGroupDev') ]
+    SecurityGroups [ Ref('SecurityGroupBastion') ]
     UserData FnBase64(FnJoin("",[
       "#!/bin/bash\n",
       "aws --region ", Ref("AWS::Region"), " ec2 associate-address --allocation-id ", FnGetAtt('BastionIPAddress','AllocationId') ," --instance-id $(curl http://169.254.169.254/2014-11-05/meta-data/instance-id -s)\n",
@@ -62,5 +85,7 @@ CloudFormation do
     addTag("EnvironmentType", Ref('EnvironmentType'), true)
     addTag("Role", "bastion", true)
   end
+
+  Output('SecurityGroupBastion', Ref('SecurityGroupBastion'))
 
 end
