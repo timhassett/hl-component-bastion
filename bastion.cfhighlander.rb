@@ -22,7 +22,7 @@ CfhighlanderTemplate do
     end
 
     ComponentParam 'VPCId', type: 'AWS::EC2::VPC::Id'
-    ComponentParam 'SecurityGroupDev', type: 'AWS::EC2::SecurityGroup::Id'
-    ComponentParam 'SecurityGroupOps', type: 'AWS::EC2::SecurityGroup::Id'
+    ComponentParam 'SecurityGroupDev'
+    ComponentParam 'SecurityGroupOps'
   end
 end
