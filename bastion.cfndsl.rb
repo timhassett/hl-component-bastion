@@ -65,10 +65,20 @@ CloudFormation do
     MinSize 1
     MaxSize 1
     VPCZoneIdentifier az_conditional_resources('SubnetPublic', maximum_availability_zones)
-    addTag("Name", FnJoin("",[Ref('EnvironmentName'), "-bastion-xx"]), true)
-    addTag("Environment",Ref('EnvironmentName'), true)
-    addTag("EnvironmentType", Ref('EnvironmentType'), true)
-    addTag("Role", "bastion", true)
+
+    instanceTags = {}
+    instanceTags["Name"] = FnJoin("",[Ref('EnvironmentName'), "-bastion-xx"])
+    instanceTags["Environment"] = Ref('EnvironmentName')
+    instanceTags["EnvironmentType"] =  Ref('EnvironmentType')
+
+    tags.each do |key,value|
+      instanceTags[key] = value
+    end if tags.any?
+
+    instanceTags.each do |key,value|
+      addTag(key, value, true)
+    end
+
   end
 
   Output('SecurityGroupBastion', Ref('SecurityGroupBastion'))

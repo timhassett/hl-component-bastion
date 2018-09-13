@@ -14,3 +14,9 @@ maximum_availability_zones: 5
 #         ToPort: 22
 #     ips:
 #       - local
+#
+# tags:
+#   SSMParameters: true
+#   Role: 'runtime-cookbook::bastion'
+#
+#
