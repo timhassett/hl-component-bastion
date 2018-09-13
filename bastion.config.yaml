@@ -19,4 +19,5 @@ maximum_availability_zones: 5
 #   SSMParameters: true
 #   Role: 'runtime-cookbook::bastion'
 #
-#
+# extra_userdata:
+#   - "/opt/base2/bin/ec2-bootstrap\n"

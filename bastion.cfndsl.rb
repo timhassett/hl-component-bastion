@@ -44,13 +44,15 @@ CloudFormation do
     IamInstanceProfile Ref('InstanceProfile')
     KeyName Ref('KeyName')
     SecurityGroups [ Ref('SecurityGroupBastion') ]
-    extra_userdata = [] unless defined?(extra_userdata)
+    unless defined?(extra_userdata)
+      extra_userdata=[]
+    end
     UserData FnBase64(FnJoin("",[
       "#!/bin/bash\n",
       "aws --region ", Ref("AWS::Region"), " ec2 associate-address --allocation-id ", FnGetAtt('BastionIPAddress','AllocationId') ," --instance-id $(curl http://169.254.169.254/2014-11-05/meta-data/instance-id -s)\n",
       "hostname ", Ref('EnvironmentName') ,"-" ,"bastion-`/opt/aws/bin/ec2-metadata --instance-id|/usr/bin/awk '{print $2}'`\n",
       "sed '/HOSTNAME/d' /etc/sysconfig/network > /tmp/network && mv -f /tmp/network /etc/sysconfig/network && echo \"HOSTNAME=", Ref('EnvironmentName') ,"-" ,"bastion-`/opt/aws/bin/ec2-metadata --instance-id|/usr/bin/awk '{print $2}'`\" >>/etc/sysconfig/network && /etc/init.d/network restart\n",
-      FnJoin("",extra_userdata)
+      FnJoin("", extra_userdata)
     ]))
   end
 
