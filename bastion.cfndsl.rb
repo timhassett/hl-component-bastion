@@ -72,6 +72,7 @@ CloudFormation do
     instanceTags["Name"] = FnJoin("",[Ref('EnvironmentName'), "-bastion-xx"])
     instanceTags["Environment"] = Ref('EnvironmentName')
     instanceTags["EnvironmentType"] =  Ref('EnvironmentType')
+    instanceTags["Role"] =  "bastion"
 
     tags.each do |key,value|
       instanceTags[key] = value
