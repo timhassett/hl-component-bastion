@@ -4,6 +4,7 @@ CfhighlanderTemplate do
     ComponentParam 'EnvironmentName', 'dev', isGlobal: true
     ComponentParam 'EnvironmentType', 'development', isGlobal: true
     ComponentParam 'Ami', type: 'AWS::EC2::Image::Id'
+    ComponentParam 'SubnetIds', type: 'CommaDelimitedList'
     MappingParam('InstanceType') do
       map 'EnvironmentType'
       attribute 'BastionInstanceType'

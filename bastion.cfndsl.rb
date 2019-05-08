@@ -1,7 +1,5 @@
 CloudFormation do
 
-  az_conditions_resources('SubnetPublic', maximum_availability_zones)
-
   EC2_SecurityGroup('SecurityGroupBastion') do
     GroupDescription FnJoin(' ', [ Ref('EnvironmentName'), component_name ])
     VpcId Ref('VPCId')
@@ -66,7 +64,7 @@ CloudFormation do
     HealthCheckGracePeriod '500'
     MinSize 1
     MaxSize 1
-    VPCZoneIdentifier az_conditional_resources('SubnetPublic', maximum_availability_zones)
+    VPCZoneIdentifier Ref('SubnetIds')
 
     instanceTags = {}
     instanceTags["Name"] = FnJoin("",[Ref('EnvironmentName'), "-bastion-xx"])
